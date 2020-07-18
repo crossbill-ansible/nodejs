@@ -1,0 +1,25 @@
+---
+
+- name: Create npm global directory
+  file:
+    path: '{{ nodejs_install_directory }}'
+    state: directory
+    owner: '{{ nodejs_default_user }}'
+    group: '{{ nodejs_default_user }}'
+
+- name: Unarchive a file
+  unarchive:
+    src: '{{ nodejs_software_url }}/v{{ nodejs_version }}/node-v{{ nodejs_version }}-linux-x64.tar.gz'
+    dest: '{{ nodejs_install_directory }}'
+    owner: '{{ nodejs_default_user }}'
+    group: '{{ nodejs_default_user }}'
+    creates: '{{ nodejs_install_directory }}/node-v{{ nodejs_version }}-linux-x64'
+    remote_src: yes
+
+- name: Create Symlink for nodejs home folder
+  file:
+    src: '{{ nodejs_install_directory }}/node-v{{ nodejs_version }}-linux-x64/'
+    dest: '{{ nodejs_install_directory }}/current'
+    state: link
+    owner: '{{ nodejs_default_user }}'
+    group: '{{ nodejs_default_user }}'

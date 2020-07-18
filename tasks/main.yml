@@ -1,0 +1,10 @@
+---
+
+- name: Validate parameters
+  assert:
+    that:
+      - nodejs_default_user is defined
+
+- include_tasks: install_nodejs.yml
+
+- include_tasks: config_npm.yml

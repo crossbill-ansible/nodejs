@@ -1,0 +1,5 @@
+export NODE_JS_HOME={{ nodejs_install_directory }}/current
+export NPM_CONFIG_PREFIX={{ nodejs_npm_config_prefix }}
+export NODE_PATH={{ nodejs_npm_config_prefix }}/lib/node_modules
+export PATH=$NODE_JS_HOME/bin:$PATH
+export PATH=$NPM_CONFIG_PREFIX/bin:$PATH

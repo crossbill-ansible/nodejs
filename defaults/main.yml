@@ -1,0 +1,19 @@
+---
+
+nodejs_version: '12.18.2'
+nodejs_npm_version: '6.14.5'
+nodejs_default_user: ubuntu
+
+nodejs_install_directory: /opt/software/nodejs
+nodejs_npm_config_prefix: /opt/software/npm
+
+nodejs_npm_repository_url: 'https://registry.npmjs.org/'
+nodejs_npm_registry: '{{ nodejs_npm_repository_url }}/npm/'
+nodejs_software_url: 'https://nodejs.org/dist/'
+
+
+nodejs_npm_config_unsafe_perm: true
+
+nodejs_npm_global_packages: []
+
+nodejs_package_json_path: ""

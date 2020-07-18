@@ -1,0 +1,42 @@
+---
+
+- name: Create npm global directory
+  file:
+    path: '{{ nodejs_npm_config_prefix }}'
+    state: directory
+    owner: '{{ nodejs_default_user }}'
+    group: '{{ nodejs_default_user }}'
+
+- name: Update .npmrc
+  become: '{{ nodejs_default_user }}'
+  template:
+    src: npmrc.j2
+    dest: .npmrc
+    mode: 0644
+  register: nodejs_npmrc_file
+
+- name: Add NODE_JS_HOME and NPM_PREFIX to global $PATH.
+  template:
+    src: npm.sh.j2
+    dest: /etc/profile.d/npm.sh
+    mode: 0644
+
+- name: Ensure npm global packages are installed.
+  become: '{{ nodejs_default_user }}'
+  npm:
+    name: '{{ item.name | default(item) }}'
+    version: "{{ item.version | default('latest') }}"
+    global: true
+    state: present
+    executable: '{{ nodejs_npm_config_prefix }}/bin/npm'
+  environment:
+    NPM_CONFIG_UNSAFE_PERM: '{{ nodejs_npm_config_unsafe_perm }}'
+  loop: '{{ nodejs_npm_global_packages }}'
+
+- name: Install packages defined in a given package.json.
+  become: '{{ nodejs_default_user }}'
+  npm:
+    path: '{{ nodejs_package_json_path }}'
+    global: true
+    executable: '{{ nodejs_npm_config_prefix }}/bin/npm'
+  when: nodejs_package_json_path is defined and nodejs_package_json_path
